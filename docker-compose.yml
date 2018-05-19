@@ -134,9 +134,9 @@ services:
       networks:
         - backend
 
-### PostgreSQL PostGis ###################################
-    postgres-postgis:
-      build: ./postgres-postgis
+### PostgreSQL ###########################################
+    postgres:
+      build: ./postgres
       volumes:
         - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
       ports:
