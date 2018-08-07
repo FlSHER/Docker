@@ -36,7 +36,7 @@ COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groov
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.121.2}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.89.2}
 
 # jenkins.war checksum, download will be validated using it
 # 2.89.2
@@ -97,11 +97,11 @@ COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 
 # Only need below if we are starting from empty jenkins_home
 ## Copy the RSA keys
-#RUN mkdir -p /var/jenkins_home/.ssh
-#RUN chown jenkins:jenkins /var/jenkins_home/.ssh
-#COPY keys/id_rsa /var/jenkins_home/.ssh/id_rsa.pub
-#COPY keys/id_rsa /var/jenkins_home/.ssh/id_rsa
-#COPY keys/known_hosts /var/jenkins_home/.ssh/known_hosts
+RUN mkdir -p /var/jenkins_home/.ssh
+RUN chown jenkins:jenkins /var/jenkins_home/.ssh
+COPY keys/id_rsa /var/jenkins_home/.ssh/id_rsa.pub
+COPY keys/id_rsa /var/jenkins_home/.ssh/id_rsa
+COPY keys/known_hosts /var/jenkins_home/.ssh/known_hosts
 #
 #USER root
 #RUN chmod 600 /var/jenkins_home/.ssh/id_rsa
