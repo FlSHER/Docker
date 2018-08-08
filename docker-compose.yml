@@ -656,6 +656,7 @@ services:
       privileged: true
       volumes:
         - ${JENKINS_HOME}:/var/jenkins_home
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
         - /var/run/docker.sock:/var/run/docker.sock
       networks:
         - frontend
