@@ -250,37 +250,6 @@ services:
       networks:
         - backend
 
-### MariaDB ##############################################
-    mariadb:
-      build: ./mariadb
-      volumes:
-        - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
-        - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
-      ports:
-        - "${MARIADB_PORT}:3306"
-      environment:
-        - MYSQL_DATABASE=${MARIADB_DATABASE}
-        - MYSQL_USER=${MARIADB_USER}
-        - MYSQL_PASSWORD=${MARIADB_PASSWORD}
-        - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      networks:
-        - backend
-
-### PostgreSQL ###########################################
-    postgres:
-      build: ./postgres
-      volumes:
-        - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
-        - ${POSTGRES_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
-      ports:
-        - "${POSTGRES_PORT}:5432"
-      environment:
-        - POSTGRES_DB=${POSTGRES_DB}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      networks:
-        - backend
-
 ### Redis ################################################
     redis:
       build: ./redis
@@ -289,40 +258,6 @@ services:
       ports:
         - "${REDIS_PORT}:6379"
       networks:
-        - backend
-
-### Beanstalkd ###########################################
-    beanstalkd:
-      build: ./beanstalkd
-      ports:
-        - "${BEANSTALKD_HOST_PORT}:11300"
-      privileged: true
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
-
-### Beanstalkd Console ###################################
-    beanstalkd-console:
-      build: ./beanstalkd-console
-      ports:
-        - "${BEANSTALKD_CONSOLE_HOST_PORT}:2080"
-      depends_on:
-        - beanstalkd
-      networks:
-        - backend
-
-### pgAdmin ##############################################
-    pgadmin:
-      build: ./pgadmin
-      ports:
-        - "5050:5050"
-      volumes:
-        - ${DATA_PATH_HOST}/pgadmin-backup:/var/lib/pgadmin/storage/pgadmin4
-      depends_on:
-        - postgres
-      networks:
-        - frontend
         - backend
 
 ### Jenkins ###################################################
@@ -338,20 +273,6 @@ services:
         - ${JENKINS_HOME}:/var/jenkins_home
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
         - /var/run/docker.sock:/var/run/docker.sock
-      networks:
-        - frontend
-        - backend
-
-### Laravel Echo Server #######################################
-    laravel-echo-server:
-      build:
-        context: ./laravel-echo-server
-      volumes:
-        - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
-      ports:
-        - "${LARAVEL_ECHO_SERVER_PORT}:6001"
-      links:
-        - redis
       networks:
         - frontend
         - backend
